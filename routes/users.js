@@ -15,16 +15,20 @@ router.post('/create-table',(req,res,next)=>{
 })
 
 /* GET users list */
-router.get('/all', function(req, res, next) {
+router.get('/all', middlewares.verifyToken,function(req, res, next) {
   const sql='SELECT * FROM users';
   con.query(sql, function (err, result) {
     if (err) throw res.send(err);
-    res.send(result)
+    const filteredData= result.map((data)=>{
+      const { password, ...rest } = data; 
+      return rest;
+    })
+    res.send(filteredData)
   });
 });
 
 // GET user by id
-router.get('/by-id/:userId',(req,res,next)=>{
+router.get('/by-id/:userId', middlewares.verifyToken,(req,res,next)=>{
   const userId=req.params.userId
   const sql=`SELECT * FROM users WHERE id = ${userId}`
   con.query(sql, function (err, result) {
@@ -62,10 +66,11 @@ router.post('/login',middlewares.checkUserDataForLogin,middlewares.generateToken
       // Handle error
     } else if (result) {
       // Passwords match, login successful
+      let {password, ...foundUser} = (res.locals.data)
       res.send({
         message: 'Login success',
         result : result,
-        data : res.locals.data,
+        data : foundUser,
         token : res.locals.token
       })
     } else {

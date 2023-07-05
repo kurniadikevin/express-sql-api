@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+const middlewares = require('./middleware/middleware');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const bestTimeRouter= require('./routes/best-time');
@@ -29,7 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/best-time',bestTimeRouter);
+app.use('/best-time',middlewares.verifyToken,bestTimeRouter);
 
 
 
