@@ -90,5 +90,17 @@ router.get('/top/:number', function(req, res, next) {
     });
   });
 
+//GET Top best time by category and type
+router.get('/top/:category/:type/:number', function(req, res, next) {
+  const {category, type, number}= req.params;
+  const table='best-time';
+  const sql=`SELECT * FROM \`${table}\` WHERE category = '${category}' AND type = '${type}' ORDER BY wpm DESC LIMIT ${number}`;
+  con.query(sql, function (err, result) {
+    if (err) throw res.send(err);
+    res.send(result)
+  });
+});
+
+
 
 module.exports = router;
