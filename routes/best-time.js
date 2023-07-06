@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
 const con = require('../config').mysql_connection;
+const middlewares = require('./middleware/middleware');
+
 
 // POST Create table 
-router.post('/create-table',(req,res,next)=>{
+router.post('/create-table',middlewares.verifyToken, (req,res,next)=>{
   const sql = "CREATE TABLE `best-time` (id INT AUTO_INCREMENT PRIMARY KEY, user_id INT, category VARCHAR(10), type VARCHAR(10), date DATE)";
   con.query(sql, function (err, result) {
       if (err) throw err;
@@ -47,7 +49,7 @@ router.get('/by-user-id/:userId',(req,res,next)=>{
   })
 
 // POST Create best-time
-router.post('/create',(req,res,next)=>{
+router.post('/create', middlewares.verifyToken,(req,res,next)=>{
     const { user_id, category, type, wpm } = req.body;
     const table = 'best-time'
     var sql = `INSERT INTO \`${table}\` (user_id, category, type, date, wpm) VALUES(${user_id},'${category}','${type}', CURDATE(), ${wpm})`
@@ -63,7 +65,7 @@ router.post('/create',(req,res,next)=>{
 })
 
 // POST Update best time by best-time id
-router.post('/update/:bestTimeId',(req,res,next)=>{
+router.post('/update/:bestTimeId', middlewares.verifyToken,(req,res,next)=>{
     const table='best-time';
     const wpm = req.body.wpm;
     const id = req.params.bestTimeId;

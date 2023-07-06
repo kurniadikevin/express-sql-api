@@ -3,13 +3,17 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
 
-const middlewares = require('./middleware/middleware');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const bestTimeRouter= require('./routes/best-time');
 
 const app = express();
+app.use(cors({
+  origin : ['http://localhost:3000','https://typeguru.vercel.app'],
+  credentials : true
+}));
 const con = require('./config').mysql_connection;
 
 con.connect(function(err) {
@@ -30,7 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/best-time',middlewares.verifyToken,bestTimeRouter);
+app.use('/best-time',bestTimeRouter);
 
 
 
