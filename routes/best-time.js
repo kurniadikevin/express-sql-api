@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const con = require('../config').mysql_connection;
-const middlewares = require('./middleware/middleware');
+const middlewares = require('../middleware/middleware');
 
 
 // POST Create table 

@@ -29,8 +29,8 @@ exports.checkUserDataForLogin=(req,res,next)=>{
            next()
         } else{
             res.send({
-                status : 200,
-                message : 'User not founded'
+                status : 404,
+                message : 'User not found'
             })
         }
       });

@@ -50,6 +50,8 @@ router.post('/create',middlewares.checkForDuplicateUserName,(req,res,next)=>{
       res.send({
         info : result,
         username : req.body.username,
+        message : 'New user created',
+        status : 200
       } )
     });
   })
@@ -71,12 +73,13 @@ router.post('/login',middlewares.checkUserDataForLogin,middlewares.generateToken
         message: 'Login success',
         result : result,
         data : foundUser,
-        token : res.locals.token
+        token : res.locals.token,
+        status : 200
       })
     } else {
       // Passwords do not match, login failed
       res.send({
-        status : 200,
+        status : 404,
         message : 'Password not match'
       })
     }
