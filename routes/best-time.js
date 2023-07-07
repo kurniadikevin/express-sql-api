@@ -81,11 +81,19 @@ router.post('/update/:bestTimeId', middlewares.verifyToken,(req,res,next)=>{
       });
 })
 
+
+/* 
+SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate
+FROM Orders
+INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
+*/
+
 //GET Top best time
 router.get('/top/:number', function(req, res, next) {
     const number= req.params.number;
     const table='best-time';
-    const sql=`SELECT * FROM \`${table}\` ORDER BY wpm DESC LIMIT ${number}`;
+    const fields=`name,wpm,date,user_id,\`${table}\`.id,category,type`
+    const sql=`SELECT ${fields}  FROM \`${table}\` INNER JOIN users ON \`${table}\`.user_id=users.id ORDER BY wpm DESC LIMIT ${number}`;
     con.query(sql, function (err, result) {
       if (err) throw res.send(err);
       res.send(result)
@@ -96,7 +104,8 @@ router.get('/top/:number', function(req, res, next) {
 router.get('/top/:category/:type/:number', function(req, res, next) {
   const {category, type, number}= req.params;
   const table='best-time';
-  const sql=`SELECT * FROM \`${table}\` WHERE category = '${category}' AND type = '${type}' ORDER BY wpm DESC LIMIT ${number}`;
+  const fields=`name,wpm,date,user_id,\`${table}\`.id,category,type`
+  const sql=`SELECT ${fields} FROM \`${table}\` INNER JOIN users ON \`${table}\`.user_id=users.id WHERE category = '${category}' AND type = '${type}' ORDER BY wpm DESC LIMIT ${number}`;
   con.query(sql, function (err, result) {
     if (err) throw res.send(err);
     res.send(result)
