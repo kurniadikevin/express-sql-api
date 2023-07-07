@@ -82,11 +82,6 @@ router.post('/update/:bestTimeId', middlewares.verifyToken,(req,res,next)=>{
 })
 
 
-/* 
-SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate
-FROM Orders
-INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
-*/
 
 //GET Top best time
 router.get('/top/:number', function(req, res, next) {
