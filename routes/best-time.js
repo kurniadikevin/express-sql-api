@@ -81,6 +81,22 @@ router.post('/update/:bestTimeId', middlewares.verifyToken,(req,res,next)=>{
       });
 })
 
+// POST Delete best-time by best-time id 
+router.post('/delete/:bestTimeId', middlewares.verifyToken,(req,res,next)=>{
+  const table='best-time';
+  const wpm = req.body.wpm;
+  const id = req.params.bestTimeId;
+  const sql= `DELETE FROM \`${table}\` WHERE id = ${id}`
+ 
+  con.query(sql, function (err, result) {
+      if (err) throw err;
+      console.log("1 record deleted");
+      res.send({
+        info : result,
+        message : `best time data with id ${id} deleted`
+      } )
+    });
+})
 
 
 //GET Top best time
