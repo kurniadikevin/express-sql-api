@@ -111,6 +111,20 @@ router.get('/top/:number', function(req, res, next) {
     });
   });
 
+  //GET Top best time by category and type
+router.get('/top/:category/:number', function(req, res, next) {
+  const {category, number}= req.params;
+  const table='best-time';
+  const fields=`name,wpm,date,user_id,\`${table}\`.id,category,type`
+  const sql=`SELECT ${fields} FROM \`${table}\` INNER JOIN users ON \`${table}\`.user_id=users.id WHERE category = '${category}' ORDER BY wpm DESC LIMIT ${number}`;
+  con.query(sql, function (err, result) {
+    if (err) throw res.send(err);
+    res.send(result)
+  });
+});
+
+
+
 //GET Top best time by category and type
 router.get('/top/:category/:type/:number', function(req, res, next) {
   const {category, type, number}= req.params;
