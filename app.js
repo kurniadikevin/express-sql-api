@@ -7,7 +7,7 @@ const cors = require('cors');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const bestTimeRouter= require('./routes/best-time');
+const bestTimeRouter= require('./routes/best_time');
 
 const app = express();
 app.use(cors({
@@ -34,7 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/best-time',bestTimeRouter);
+app.use('/best_time',bestTimeRouter);
 
 
 

@@ -6,7 +6,7 @@ const middlewares= require('../middleware/middleware');
 
 // POST Create table 
 router.post('/create-table',(req,res,next)=>{
-  var sql = "CREATE TABLE users (name VARCHAR(255), password VARCHAR(255))";
+  var sql = "CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), password VARCHAR(255))";
   con.query(sql, function (err, result) {
     if (err) throw err;
     console.log("User table created!");
