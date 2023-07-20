@@ -6,6 +6,7 @@ test('Check database connection', async () => {
         con.connect(function(err) {
             if (err) throw err;
             return ("MySql Connected!");
+            
           });
     }
 

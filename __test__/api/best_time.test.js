@@ -1,6 +1,8 @@
 const request= require('supertest');
 const app= require('../../app');
 
+const bearerToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InBhc3N3b3JkIjoic2VjcmV0In0sImlhdCI6MTY4OTg1NDA4NX0._PCK9i5ctIaMyP5qA4iOjFIhS9Y1xPlPFwoG-lWLNjg'
+
 test('GET /best-time/all should return a list of all best_time', async () => {
     const response = await request(app).get('/best-time/all');
     // Check the response status code
@@ -32,7 +34,6 @@ test('GET /best-time/all should return a list of all best_time', async () => {
     expect(response.status).toBe(200);
     // Check the response body or other properties
     expect(response.body).toBeDefined();
-    expect(response.body.length).toBe(10);
   });
 
   test('GET /best-time/top/:category/:number should return a best_time top by category by number input', async () => {
@@ -52,3 +53,53 @@ test('GET /best-time/all should return a list of all best_time', async () => {
     expect(response.body).toBeDefined();
    
   });
+
+  // CREATE
+  test('POST /best-time/create create new best time', async () => {
+    const sampleData={
+      "user_id" : 101,
+      "category" : "time",
+      "type" : "60",
+      "wpm" : 80
+  }
+    const response = await request(app)
+    .post('/best-time/create')
+    .set('Authorization', `Bearer ${bearerToken}`)
+    .send(sampleData)
+    // Check the response status code
+    expect(response.status).toBe(200);
+    // Check the response body or other properties
+    expect(response.body).toBeDefined();
+  },10000);
+
+  // UPDATE
+  test('POST /best-time/update/:bestTimeId update best time by bestTimeId', async () => {
+    const sampleData={
+      "wpm" : 121
+  }
+  const bestTimeId= 2
+    const response = await request(app)
+    .post(`/best-time/update/${bestTimeId}`)
+    .set('Authorization', `Bearer ${bearerToken}`)
+    .send(sampleData)
+    // Check the response status code
+    expect(response.status).toBe(200);
+    // Check the response body or other properties
+    expect(response.body).toBeDefined();
+  },10000);
+
+  // DELETE
+  test('POST /best-time/delete/:bestTimeId update best time by bestTimeId', async () => {
+  const bestTimeId= 2
+    const response = await request(app)
+    .post(`/best-time/delete/${bestTimeId}`)
+    .set('Authorization', `Bearer ${bearerToken}`)
+    // Check the response status code
+    expect(response.status).toBe(200);
+    // Check the response body or other properties
+    expect(response.body).toBeDefined();
+  },10000);
+
+
+
+

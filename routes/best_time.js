@@ -51,10 +51,11 @@ router.get('/by-user-id/:userId',(req,res,next)=>{
 // POST Create best_time
 router.post('/create', middlewares.verifyToken,(req,res,next)=>{
     const { user_id, category, type, wpm } = req.body;
-    const table = 'best_time'
-    var sql = `INSERT INTO \`${table}\` (user_id, category, type, date, wpm) VALUES(${user_id},'${category}','${type}', CURDATE(), ${wpm})`
+    const table = 'best_time';
+    const values=[user_id,category,type,wpm]
+    var sql = `INSERT INTO \`${table}\` (user_id, category, type, date, wpm) VALUES(?,?,?,CURDATE(),?)`
 
-    con.query(sql, function (err, result) {
+    con.query(sql,values, function (err, result) {
       if (err) throw err;
       console.log("1 record inserted");
       res.send({
@@ -84,7 +85,6 @@ router.post('/update/:bestTimeId', middlewares.verifyToken,(req,res,next)=>{
 // POST Delete best_time by best_time id 
 router.post('/delete/:bestTimeId', middlewares.verifyToken,(req,res,next)=>{
   const table='best_time';
-  const wpm = req.body.wpm;
   const id = req.params.bestTimeId;
   const sql= `DELETE FROM \`${table}\` WHERE id = ${id}`
  

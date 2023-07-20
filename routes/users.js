@@ -43,8 +43,9 @@ router.post('/create',middlewares.checkForDuplicateUserName,(req,res,next)=>{
   bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
     if(err){return next('password failed to proceed')}
     const name= req.body.name;
-    var sql = `INSERT INTO users (name, password) VALUES('${name}', '${hashedPassword}')`;
-    con.query(sql, function (err, result) {
+    const values=[name,hashedPassword]
+    var sql = `INSERT INTO users (name, password) VALUES(?,?)`;
+    con.query(sql,values, function (err, result) {
       if (err) throw err;
       console.log("1 record inserted");
       res.send({
